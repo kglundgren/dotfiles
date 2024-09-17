@@ -1,0 +1,12 @@
+[shell]
+program = 'pwsh.exe'
+args = ['-WorkingDirectory', 'C:/']
+
+[font]
+size = 12.5
+normal = { family = 'JetBrainsMono Nerd Font', style = 'Medium' }
+
+[window]
+padding = { x = 5, y = 5 }
+# opacity = 0.92
+

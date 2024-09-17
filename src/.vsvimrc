@@ -1,0 +1,28 @@
+" Show line numbers relative to current line.
+set number relativenumber
+
+" -- Leader --
+" Map leader to space.
+nnoremap <SPACE> <Nop>
+let mapleader=' '
+
+" Toggle nohlsearch.
+nnoremap <leader>l :nohl<CR>
+
+" Rename functions with Leader-R.
+nnoremap <leader>r :vsc Refactor.Rename<CR>
+
+" -- Normal mode --
+nnoremap gd :vsc Edit.GoToDefinition<CR>
+nnoremap gh :vsc Edit.GoToDeclaration<CR>
+nnoremap gf :vsc Edit.QuickInfo<CR>
+nnoremap gi :vsc Edit.GoToImplementation<CR>
+nnoremap gr :vsc Edit.FindAllReferences<CR>
+nnoremap ]d :vsc Edit.GoToNextIssueInFile<CR>
+nnoremap [d :vsc Edit.GoToPreviousIssueInFile<CR>
+nnoremap <C-i> :vsc View.NavigateForward<CR>
+nnoremap <C-o> :vsc View.NavigateBackward<CR>
+
+" -- Visual mode -- 
+" Disable regular (annoying) visual paste behavior.
+vnoremap p "_dP

@@ -7,6 +7,11 @@ function Print($Message, $Value, $Color = 'Green') {
     Write-Host $Value
 }
 
+if (-not $Username) {
+    Write-Host "Usage: './config -Username {USER}', where {USER} is the name of your user's directory in C:/Users."
+    return
+}
+
 if ($Username -match '^[a-zA-Z0-9]+') {
     Print "Using username: " $Username
 }
@@ -14,12 +19,12 @@ else {
     return Print "Username is invalid. Can only contain letters and numbers." -Color Red
 }
 
-$usersDir = Join-Path C:\Users $Username
+$usersDir = Join-Path C:/Users $Username
 if (Test-Path $usersDir -PathType container) {
     Print "Directory found: " $usersDir
 }
 else {
-    return Print "No directory for user '$Username' found in C:\Users" -Color Red
+    return Print "No directory for user '$Username' found in C:/Users" -Color Red
 }
 
 $root = $PSScriptRoot # Directory of the script.
@@ -29,31 +34,31 @@ if (Test-Path $vsvimrc) {
     Print ".vsvimrc is already linked." -Color DarkCyan
 }
 else {
-    New-Item -ItemType SymbolicLink -Path $vsvimrc -Target "$root\src\.vsvimrc"
+    New-Item -ItemType SymbolicLink -Path $vsvimrc -Target "$root/src/.vsvimrc"
 }
 
-$nvim = Join-Path $usersDir AppData\Local nvim
+$nvim = Join-Path $usersDir AppData/Local nvim
 if (Test-Path $nvim) {
     Print "nvim is already linked." -Color DarkCyan
 }
 else {
-    New-Item -ItemType SymbolicLink -Path $nvim -Target "$root\src\nvim"
+    New-Item -ItemType SymbolicLink -Path $nvim -Target "$root/src/nvim"
 }
 
-$alacritty = Join-Path $usersDir AppData\Roaming alacritty 
+$alacritty = Join-Path $usersDir AppData/Roaming alacritty 
 if (Test-Path $alacritty) {
     Print "alacritty is already linked." -Color DarkCyan
 }
 else {
-    New-Item -ItemType SymbolicLink -Path $alacritty -Target "$root\src\alacritty"
+    New-Item -ItemType SymbolicLink -Path $alacritty -Target "$root/src/alacritty"
 }
 
-$pwsh = Join-Path $usersDir Documents\PowerShell Microsoft.PowerShell_profile.ps1
+$pwsh = Join-Path $usersDir Documents/PowerShell Microsoft.PowerShell_profile.ps1
 if (Test-Path $pwsh) {
     Print "pwsh is already linked." -Color DarkCyan
 }
 else {
-    New-Item -ItemType SymbolicLink -Path $pwsh -Target "$root\src\Microsoft.PowerShell_profile.ps1"
+    New-Item -ItemType SymbolicLink -Path $pwsh -Target "$root/src/Microsoft.PowerShell_profile.ps1"
 }
 
 while ($True) {

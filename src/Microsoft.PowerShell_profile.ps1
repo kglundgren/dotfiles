@@ -1,5 +1,17 @@
 Import-Module PSReadLine
 
+function Prompt
+{
+    $currentLocation = (Get-Location).Path
+    $homeDirectory = [System.Environment]::GetFolderPath('UserProfile')
+
+    $displayLocation = $currentLocation -replace "^$([regex]::Escape($homeDirectory))", '~'
+    $promptString = "PS " + $displayLocation + ">"
+
+    Write-Host $promptString -NoNewline -ForegroundColor Blue
+    return " "
+}
+
 # function OnViModeChange
 # {
 # 
@@ -38,32 +50,16 @@ function sudo
     start pwsh -args "-noe" -Verb RunAs
 }
 
-<# 
-.SYNOPSIS
-Find files that matches the pattern.
-
-.PARAMETER fileType
-The file type to search for. Defaults to '*' (all file types).
-
-.PARAMETER pattern
-The regex pattern to match the file name to.
-
-.EXAMPLE
-ff '*.cs' | fzf
-Finds all csharp files and pipes them to fzf for searching.
-
-.EXAMPLE
-ff -pattern 'launchSettings'
-Finds all files that has 'launchSettings' in their file name.
-#>
-function ff
+# Finds files with ripgrep (rg). 
+# Example: `rgf "*.cs"`, finds all csharp files. 
+function rgf
 {
-    param($fileType='*', $pattern)
-    ls -r -fo $fileType | ? { $_.Name -match $pattern } | ep FullName
+    param([string]$glob)
+    rg --files -g $glob
 }
 
 # Source local aliases specific to this machine.
-$pwshDir = Join-Path $HOME Documents\PowerShell
+$pwshDir = Join-Path $HOME Documents/PowerShell
 $localAliases = Join-Path $pwshDir local_aliases.ps1
 if (Test-Path $localAliases) {
     . $localAliases 

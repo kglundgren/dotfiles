@@ -1,31 +1,65 @@
+--== Commands ==--
+-- vim.opt: Set list and map-style options.
+-- vim.g: Set global editor variables.
+-- vim.cmd: Executes an 'ex' command, like 'language en' or 'set path+=**'.
+vim.cmd('language messages en') -- Set ui and message language to English.
+-- vim.cmd('set showtabline=1') -- Show tab-line only if there are at least two tab pages.
+vim.cmd('set nowrap') -- No line-wrapping on long lines.
+vim.cmd('colo retrobox')
+
+
 --== Options ==--
 local opts = {
-    expandtab = true,
-    shiftwidth = 4,
-    softtabstop = 4,
-    tabstop = 8,
     number = true,
     relativenumber = true,
-    shell = 'pwsh'
+    shell = 'pwsh',
+    mouse = 'a',
+    -- Tab settings --
+    -- expandtab:     When this option is enabled, vi will use spaces instead of tabs.
+    -- tabstop:       Width of tab character.
+    -- softtabstop:   Affects the distance moved when pressing <Tab> or <BS>.
+    -- shiftwidth:    Affects automatic indentation.
+    expandtab = true,
+    tabstop = 8,
+    softtabstop = 4,
+    shiftwidth = 4,
 } 
-for k,v in pairs(opts) do
+for k, v in pairs(opts) do
     -- vim.notify(k .. " = " .. tostring(v)) -- print messages to nvim console
     vim.opt[k] = v
 end
 
-vim.cmd('colorscheme retrobox')
+
+--== Netrw ==--
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 3
+vim.g.netrw_altv = 1
+vim.g.netrw_winsize = 20
 
 
---== Keybindings ==--
-
--- Set leader key to space.
-vim.g.mapleader = ' '
-
+--== Mappings ==--
 local map = vim.api.nvim_set_keymap
 local map_opts = { noremap = true, silent = true }
 
-map('v', 'p', '"_dP', map_opts)
+-- Leader
+-- Set leader key to space.
+vim.g.mapleader = ' '
+-- Toggle search highlighting.
 map('n', '<leader>l', ':set nohlsearch!<CR>', map_opts)
+
+-- Modes
+--   normal_mode = 'n',
+--   insert_mode = 'i',
+--   visual_mode = 'v',
+--   visual_block_mode = 'x',
+--   term_mode = 't',
+--   command_mode = 'c',
+
+-- Discard (don't yank) the selected text that is pasted over.
+-- If you have 'foo' yanked and select 'bar', then pasting over
+-- 'bar' would normally yank 'bar' into your registry.
+-- This makes it so that 'foo' stays in the reg.
+map('v', 'p', '"_dP', map_opts)
 
 -- Copy and paste with Ctrl+C Ctrl+V.
 map('v', '<C-c>', '"+y', map_opts)
@@ -35,9 +69,11 @@ map('n', '<C-v>', '"+p', map_opts)
 map('n', '<leader>t', ':belowright 15split | terminal<CR>i', map_opts)
 map('n', '<C-w>', ':q<CR>', map_opts)
 
+-- Stay in Visual Mode with the same selection after indenting.
 map('v', '<', '<gv', map_opts)
 map('v', '>', '>gv', map_opts)
 
+-- Navigate between splits with Alt+HJKL.
 map('n', '<A-h>', '<C-w>h', map_opts)
 map('n', '<A-j>', '<C-w>j', map_opts)
 map('n', '<A-k>', '<C-w>k', map_opts)
@@ -50,4 +86,24 @@ map('t', '<A-j>', [[<C-\><C-n><C-w>j]], map_opts)
 map('t', '<A-k>', [[<C-\><C-n><C-w>k]], map_opts)
 map('t', '<A-l>', [[<C-\><C-n><C-w>l]], map_opts)
 map('t', '<C-w>', [[<C-\><C-n>:q<CR>]], map_opts)
+
+
+--== Autocmds ==--
+-- Treat svelte files as html.
+local autocmd = vim.api.nvim_create_autocmd
+autocmd('BufEnter', {
+    pattern = '*.svelte',
+    command = 'set ft=html',
+})
+
+-- Set HTML syntax highlighting for .razor files.
+autocmd('BufEnter', {
+    pattern = '*.razor',
+    command = 'set ft=html',
+})
+
+
+--== Plugins ==--
+-- lazy.nvim
+require("config.lazy")
 

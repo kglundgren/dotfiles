@@ -51,6 +51,10 @@ for k, v in pairs(opts) do
 end
 
 
+-- Omnisharp
+vim.g.OmniSharp_highlighting = 0
+
+
 --== Netrw ==--
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
@@ -112,8 +116,19 @@ map('t', '<A-k>', [[<C-\><C-n><C-w>k]], map_opts)
 map('t', '<A-l>', [[<C-\><C-n><C-w>l]], map_opts)
 map('t', '<C-q>', [[<C-\><C-n>:q<CR>]], map_opts)
 
--- Fzf
+-- netrw
+map('n', '<leader>e', ':Lexplore<CR>', map_opts)
+
+-- fzf
 vim.keymap.set('n', '<C-p>', require('fzf-lua').files, { desc = 'Fzf Files'})
+vim.keymap.set('n', '<C-f>', require('fzf-lua').live_grep, { desc = 'Fzf Grep'})
+
+-- LSP
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+vim.keymap.set('n', 'gr', vim.lsp.buf.references)
+vim.keymap.set('n', 'gf', vim.lsp.buf.hover)
+vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+
 
 --== Autocmds ==--
 -- Treat svelte files as html.

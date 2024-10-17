@@ -29,18 +29,30 @@ now(function() add { source = 'sainnhe/gruvbox-material' } end)
 now(function() add { source = 'ibhagwan/fzf-lua' } end)
 later(function() require('fzf-lua').setup {} end)
 
+
 -- LSP
 now(function() add {
     source = 'neovim/nvim-lspconfig',
     depends = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' }
 } end)
-later(function() require('mason').setup() end)
-later(function() require('mason-lspconfig').setup_handlers {
+
+now(function() require('mason').setup() end)
+
+local on_lsp_attach = function(client, bufnr)
+    local client_name = client.name or 'unknown'
+    print('LSP ' .. client_name .. ' attached to bufnr ' .. bufnr)
+
+    if client_name == 'lua_ls' then
+        client.server_capabilities.semanticTokensProvider = nil -- Disable lua_ls syntax highlighting and leave it to treesitter.
+    end
+end
+
+now(function() require('mason-lspconfig').setup_handlers {
     -- The first entry (without a key) will be the default handler
     -- and will be called for each installed server that doesn't have
     -- a dedicated handler.
     function (server_name) -- default handler
-        require('lspconfig')[server_name].setup {}
+        require('lspconfig')[server_name].setup { on_attach = on_lsp_attach }
     end,
     -- Next, you can provide a dedicated handler for specific servers.
     -- For example, a handler override for the `lua_ls`:
@@ -48,11 +60,25 @@ later(function() require('mason-lspconfig').setup_handlers {
         require('lspconfig').lua_ls.setup {
             settings = { Lua = {
                 diagnostics = { globals = { 'vim' } }
-            }}
+            }},
+            on_attach = on_lsp_attach
+        }
+    end,
+    ['omnisharp'] = function()
+        require('lspconfig').omnisharp.setup {
+            -- cmd = { 'dotnet', vim.fn.stdpath('data') .. 'mason/packages/omnisharp/libexec/OmniSharp.dll' }
+            cmd = {
+                "omnisharp",
+                "--languageserver",
+                "--hostPID",
+                tostring(vim.fn.getpid())
+            },
+            on_attach = on_lsp_attach
         }
     end
 } end)
-later(function() require('mason-lspconfig').setup {
+
+now(function() require('mason-lspconfig').setup {
     ensure_installed = {
         'lua_ls'
     }
@@ -64,6 +90,8 @@ later(function() require('mason-lspconfig').setup {
     -- 	local lspconfig = require('lspconfig')
     -- end)
 
+
+-- Treesitter
 later(function()
     add {
         source = 'nvim-treesitter/nvim-treesitter',

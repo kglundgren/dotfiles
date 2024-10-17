@@ -1,3 +1,13 @@
+--== Plugins ==--
+-- lazy.nvim
+-- require("config.lazy")
+-- mini
+require('config.mini')
+
+
+local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
+
+
 --== Commands ==--
 -- vim.opt: Set list and map-style options.
 -- vim.g: Set global editor variables.
@@ -5,14 +15,18 @@
 vim.cmd('language messages en') -- Set ui and message language to English.
 -- vim.cmd('set showtabline=1') -- Show tab-line only if there are at least two tab pages.
 vim.cmd('set nowrap') -- No line-wrapping on long lines.
-vim.cmd('colo retrobox')
+
+-- Set contrast.
+-- This configuration option should be placed before `colorscheme gruvbox-material`.
+-- Available values: 'hard', 'medium'(default), 'soft'
+vim.g.gruvbox_material_background = 'medium'
+vim.cmd('colo gruvbox-material')
 
 
 --== Options ==--
 local opts = {
     number = true,
     relativenumber = true,
-    shell = 'pwsh',
     mouse = 'a',
     -- Tab settings --
     -- expandtab:     When this option is enabled, vi will use spaces instead of tabs.
@@ -23,7 +37,14 @@ local opts = {
     tabstop = 8,
     softtabstop = 4,
     shiftwidth = 4,
-} 
+}
+
+-- Conditionally add Windows-specific settings. 
+if is_windows then
+    opts.shell = 'pwsh'
+    opts.shellcmdflag = '-c'
+end
+
 for k, v in pairs(opts) do
     -- vim.notify(k .. " = " .. tostring(v)) -- print messages to nvim console
     vim.opt[k] = v
@@ -44,8 +65,12 @@ local map_opts = { noremap = true, silent = true }
 -- Leader
 -- Set leader key to space.
 vim.g.mapleader = ' '
+
 -- Toggle search highlighting.
 map('n', '<leader>l', ':set nohlsearch!<CR>', map_opts)
+
+-- Quit with leader+q.
+map('n', '<leader>q', ':q<CR>', map_opts)
 
 -- Modes
 --   normal_mode = 'n',
@@ -67,7 +92,7 @@ map('v', '<C-v>', '"_d"+P', map_opts)
 map('n', '<C-c>', '"+yy', map_opts)
 map('n', '<C-v>', '"+p', map_opts)
 map('n', '<leader>t', ':belowright 15split | terminal<CR>i', map_opts)
-map('n', '<C-w>', ':q<CR>', map_opts)
+map('n', '<leader>q', ':q<CR>', map_opts)
 
 -- Stay in Visual Mode with the same selection after indenting.
 map('v', '<', '<gv', map_opts)
@@ -85,8 +110,10 @@ map('t', '<A-h>', [[<C-\><C-n><C-w>h]], map_opts)
 map('t', '<A-j>', [[<C-\><C-n><C-w>j]], map_opts)
 map('t', '<A-k>', [[<C-\><C-n><C-w>k]], map_opts)
 map('t', '<A-l>', [[<C-\><C-n><C-w>l]], map_opts)
-map('t', '<C-w>', [[<C-\><C-n>:q<CR>]], map_opts)
+map('t', '<C-q>', [[<C-\><C-n>:q<CR>]], map_opts)
 
+-- Fzf
+vim.keymap.set('n', '<C-p>', require('fzf-lua').files, { desc = 'Fzf Files'})
 
 --== Autocmds ==--
 -- Treat svelte files as html.
@@ -101,9 +128,4 @@ autocmd('BufEnter', {
     pattern = '*.razor',
     command = 'set ft=html',
 })
-
-
---== Plugins ==--
--- lazy.nvim
-require("config.lazy")
 

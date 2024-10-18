@@ -117,7 +117,11 @@ map('t', '<A-l>', [[<C-\><C-n><C-w>l]], map_opts)
 map('t', '<C-q>', [[<C-\><C-n>:q<CR>]], map_opts)
 
 -- netrw
+-- Toggle left-side netrw with <leader>e.
 map('n', '<leader>e', ':Lexplore<CR>', map_opts)
+
+-- Change working directory to that of the current file. 
+map('n', '<leader>cd', ':cd %:p:h<CR>', map_opts)
 
 -- fzf
 vim.keymap.set('n', '<C-p>', require('fzf-lua').files, { desc = 'Fzf Files'})

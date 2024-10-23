@@ -27,7 +27,13 @@ now(function() add { source = 'sainnhe/gruvbox-material' } end)
 
 -- fzf-lua
 now(function() add { source = 'ibhagwan/fzf-lua' } end)
-later(function() require('fzf-lua').setup {} end)
+later(function() require('fzf-lua').setup {
+    keymap = {
+        fzf = {
+            ['ctrl-q'] = 'select-all+accept'
+        }
+    }
+} end)
 
 
 -- LSP
@@ -42,9 +48,12 @@ local on_lsp_attach = function(client, bufnr)
     local client_name = client.name or 'unknown'
     print('LSP ' .. client_name .. ' attached to bufnr ' .. bufnr)
 
-    if client_name == 'lua_ls' then
-        client.server_capabilities.semanticTokensProvider = nil -- Disable lua_ls syntax highlighting and leave it to treesitter.
-    end
+    -- Disable syntax highlighting from LSP.
+    client.server_capabilities.semanticTokensProvider = nil -- Disable LSP syntax highlighting and leave it to treesitter.
+
+    -- Settings for specific LSPs.
+    -- if client_name == 'lua_ls' then
+    -- end
 end
 
 now(function() require('mason-lspconfig').setup_handlers {

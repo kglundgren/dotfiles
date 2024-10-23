@@ -48,8 +48,8 @@ local on_lsp_attach = function(client, bufnr)
     local client_name = client.name or 'unknown'
     print('LSP ' .. client_name .. ' attached to bufnr ' .. bufnr)
 
-    -- Disable syntax highlighting from LSP.
-    client.server_capabilities.semanticTokensProvider = nil -- Disable LSP syntax highlighting and leave it to treesitter.
+    -- Disable syntax highlighting from LSP and leave it to treesitter.
+    client.server_capabilities.semanticTokensProvider = nil
 
     -- Settings for specific LSPs.
     -- if client_name == 'lua_ls' then

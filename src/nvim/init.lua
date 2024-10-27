@@ -76,6 +76,9 @@ map('n', '<leader>l', ':set nohlsearch!<CR>', map_opts)
 -- Quit with leader+q.
 map('n', '<leader>q', ':q<CR>', map_opts)
 
+-- Save with leader-w.
+map('n', '<leader>w', ':w<CR>', map_opts)
+
 -- Modes
 --   normal_mode = 'n',
 --   insert_mode = 'i',
@@ -90,13 +93,16 @@ map('n', '<leader>q', ':q<CR>', map_opts)
 -- This makes it so that 'foo' stays in the reg.
 map('v', 'p', '"_dP', map_opts)
 
+-- Move selected line up and down with <A-j/k>.
+map('v', '<A-j>', 'dp<S-v>', map_opts)
+map('v', '<A-k>', 'dkP<S-v>', map_opts)
+
 -- Copy and paste with Ctrl+C Ctrl+V.
 map('v', '<C-c>', '"+y', map_opts)
 map('v', '<C-v>', '"_d"+P', map_opts)
 map('n', '<C-c>', '"+yy', map_opts)
 map('n', '<C-v>', '"+p', map_opts)
 map('n', '<leader>t', ':belowright 15split | terminal<CR>i', map_opts)
-map('n', '<leader>q', ':q<CR>', map_opts)
 
 -- Stay in Visual Mode with the same selection after indenting.
 map('v', '<', '<gv', map_opts)
@@ -109,7 +115,7 @@ map('n', '<A-k>', '<C-w>k', map_opts)
 map('n', '<A-l>', '<C-w>l', map_opts)
 
 -- Terminal mode
-map('t', '<C-x>', [[<C-\><C-n>]], map_opts)
+map('t', '<leader>t', '<C-\\><C-n>:q<CR>', map_opts)
 map('t', '<A-h>', [[<C-\><C-n><C-w>h]], map_opts)
 map('t', '<A-j>', [[<C-\><C-n><C-w>j]], map_opts)
 map('t', '<A-k>', [[<C-\><C-n><C-w>k]], map_opts)

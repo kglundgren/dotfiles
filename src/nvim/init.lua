@@ -114,7 +114,6 @@ map('t', '<A-h>', [[<C-\><C-n><C-w>h]], map_opts)
 map('t', '<A-j>', [[<C-\><C-n><C-w>j]], map_opts)
 map('t', '<A-k>', [[<C-\><C-n><C-w>k]], map_opts)
 map('t', '<A-l>', [[<C-\><C-n><C-w>l]], map_opts)
-map('t', '<C-q>', [[<C-\><C-n>:q<CR>]], map_opts)
 
 -- netrw
 -- Toggle left-side netrw with <leader>e.

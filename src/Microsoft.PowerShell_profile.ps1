@@ -1,7 +1,6 @@
 Import-Module PSReadLine
 
-function Prompt
-{
+function Prompt {
     $currentLocation = (Get-Location).Path
     $homeDirectory = [System.Environment]::GetFolderPath('UserProfile')
 
@@ -12,12 +11,31 @@ function Prompt
     return " "
 }
 
-# function OnViModeChange
-# {
-# 
-# }
-# 
-Set-PSReadLineOption -EditMode Vi -ViModeIndicator Cursor # -ViModeIndicator Script -ViModeChangeHandler $Function:OnViModeChange
+function OnViModeChange {
+    if ($args[0] -eq 'Command') {
+        # Set the cursor to a blinking block.
+        Write-Host -NoNewLine "`e[1 q"
+    }
+    else {
+        # Set the cursor to a blinking line.
+        Write-Host -NoNewLine "`e[5 q"
+    }
+}
+
+$PSReadLineOptions = @{
+    EditMode = 'Vi'
+    ViModeIndicator = 'Script'
+    ViModeChangeHandler = $Function:OnViModeChange
+}
+Set-PSReadLineOption @PSReadLineOptions
+
+# Source local aliases specific to this machine.
+$pwshDir = Join-Path $HOME Documents/PowerShell
+$localAliases = Join-Path $pwshDir local_aliases.ps1
+if (Test-Path $localAliases) {
+    . $localAliases 
+}
+
 
 <#
 .SYNOPSIS
@@ -35,8 +53,7 @@ This example gets the list of processes and expands the 'Name' property, printin
 ls -r -fo '*.cs' | ep FullName
 This example lists all .cs files recursively and prints only the full file names.
 #>
-function ep
-{
+function ep {
     param(
         # [Parameter(ValueFromPipeline=$true)] $input,
         $prop
@@ -45,23 +62,13 @@ function ep
 }
 
 # Start a pwsh session as admin.
-function sudo
-{
+function sudo {
     start pwsh -args "-noe" -Verb RunAs
 }
 
-# Finds files with ripgrep (rg). 
-# Example: `rgf "*.cs"`, finds all csharp files. 
-function rgf
-{
-    param([string]$glob)
-    rg --files -g $glob
-}
-
-# Source local aliases specific to this machine.
-$pwshDir = Join-Path $HOME Documents/PowerShell
-$localAliases = Join-Path $pwshDir local_aliases.ps1
-if (Test-Path $localAliases) {
-    . $localAliases 
+# Change dir to exe location, or for example 'cdf $profile' to switch to the pwsh profile dir.
+function cdf {
+    param($exeName)
+    cd (split-path (Get-Command $exeName).Source)
 }
 

@@ -12,7 +12,6 @@ local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
 -- vim.opt: Set list and map-style options.
 -- vim.g: Set global editor variables.
 -- vim.cmd: Executes an 'ex' command, like 'language en' or 'set path+=**'.
-vim.cmd('language messages en') -- Set ui and message language to English.
 -- vim.cmd('set showtabline=1') -- Show tab-line only if there are at least two tab pages.
 vim.cmd('set nowrap') -- No line-wrapping on long lines.
 
@@ -20,6 +19,7 @@ vim.cmd('set nowrap') -- No line-wrapping on long lines.
 -- This configuration option should be placed before `colorscheme gruvbox-material`.
 -- Available values: 'hard', 'medium'(default), 'soft'
 vim.g.gruvbox_material_background = 'medium'
+vim.g.gruvbox_material_disable_italic_comment = true
 vim.cmd('colo gruvbox-material')
 
 
@@ -43,6 +43,7 @@ local opts = {
 if is_windows then
     opts.shell = 'pwsh'
     opts.shellcmdflag = '-c'
+    vim.cmd('language messages en') -- Set ui and message language to English.
 end
 
 for k, v in pairs(opts) do

@@ -24,6 +24,10 @@ now(function() require('mini.icons').setup() end)
 -- Colorschemes.
 now(function() add { source = 'folke/tokyonight.nvim' } end)
 now(function() add { source = 'sainnhe/gruvbox-material' } end)
+now(function() add { source = 'Mofiqul/dracula.nvim' } end)
+later(function() require('dracula').setup {
+    italic_comment = false
+} end)
 
 -- fzf-lua
 now(function() add { source = 'ibhagwan/fzf-lua' } end)

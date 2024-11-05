@@ -119,8 +119,9 @@ later(function()
     }
     -- Possible to immediately execute code which depends on the added plugin
     require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'lua', 'vimdoc', 'c_sharp', 'c' },
+        ensure_installed = { 'lua', 'vimdoc', 'c_sharp', 'c', 'powershell' },
         highlight = { enable = true },
+        indent = { enable = true }
     }
 end)
 

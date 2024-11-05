@@ -28,6 +28,7 @@ now(function() add { source = 'Mofiqul/dracula.nvim' } end)
 later(function() require('dracula').setup {
     italic_comment = false
 } end)
+now(function() add { source = 'sainttttt/flesh-and-blood' } end)
 
 -- fzf-lua
 now(function() add { source = 'ibhagwan/fzf-lua' } end)
@@ -38,6 +39,8 @@ later(function() require('fzf-lua').setup {
         }
     }
 } end)
+
+now(function() add { source = 'zefei/vim-colortuner' } end)
 
 
 -- LSP

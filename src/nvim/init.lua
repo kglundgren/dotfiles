@@ -18,13 +18,15 @@ vim.cmd('set nowrap') -- No line-wrapping on long lines.
 -- Set contrast.
 -- This configuration option should be placed before `colorscheme gruvbox-material`.
 -- Available values: 'hard', 'medium'(default), 'soft'
-vim.g.gruvbox_material_background = 'medium'
-vim.g.gruvbox_material_disable_italic_comment = true
-vim.cmd('colo gruvbox-material')
+-- vim.g.gruvbox_material_background = 'medium'
+-- vim.g.gruvbox_material_disable_italic_comment = true
+-- vim.cmd('colo gruvbox-material')
+vim.cmd('colo flesh-and-blood')
 
 
 --== Options ==--
 local opts = {
+    termguicolors = true,
     number = true,
     relativenumber = true,
     mouse = 'a',

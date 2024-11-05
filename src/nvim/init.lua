@@ -44,7 +44,11 @@ local opts = {
 -- Conditionally add Windows-specific settings. 
 if is_windows then
     opts.shell = 'pwsh'
-    opts.shellcmdflag = '-c'
+    opts.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
+    opts.shellredir = "2>&1 | %%{ '$_' } | Out-File %s; exit $LastExitCode"
+    opts.shellpipe = "2>&1 | %%{ '$_' } | tee %s; exit $LastExitCode"
+    opts.shellquote = ''
+    opts.shellxquote = ''
     vim.cmd('language messages en') -- Set ui and message language to English.
 end
 

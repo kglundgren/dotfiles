@@ -40,7 +40,7 @@ later(function() require('fzf-lua').setup {
     }
 } end)
 
-now(function() add { source = 'zefei/vim-colortuner' } end)
+now(function() add { source = 'kglundgren/vim-colortuner' } end)
 
 
 -- LSP

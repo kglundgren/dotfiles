@@ -21,6 +21,12 @@ vim.cmd('set nowrap') -- No line-wrapping on long lines.
 -- vim.g.gruvbox_material_background = 'medium'
 -- vim.g.gruvbox_material_disable_italic_comment = false
 -- vim.cmd('colo gruvbox-material')
+require('tokyonight').setup {
+    styles = {
+        comments = { italic = false },
+        keywords = { italic = false }
+    }
+}
 vim.cmd('colo tokyonight')
 
 --== Options ==--

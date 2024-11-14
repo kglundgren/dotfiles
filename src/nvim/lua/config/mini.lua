@@ -25,6 +25,8 @@ now(function() require('mini.icons').setup() end)
 now(function() add { source = 'folke/tokyonight.nvim' } end)
 now(function() add { source = 'sainnhe/gruvbox-material' } end)
 now(function() add { source = 'sainttttt/flesh-and-blood' } end)
+now(function() add { source = 'wnkz/monoglow.nvim'} end)
+now(function() add { source = 'kdheepak/monochrome.nvim'} end)
 
 -- fzf-lua
 now(function() add { source = 'ibhagwan/fzf-lua' } end)

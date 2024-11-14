@@ -15,19 +15,27 @@ local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
 -- vim.cmd('set showtabline=1') -- Show tab-line only if there are at least two tab pages.
 vim.cmd('set nowrap') -- No line-wrapping on long lines.
 
+-- gruvbox
 -- Set contrast.
 -- This configuration option should be placed before `colorscheme gruvbox-material`.
 -- Available values: 'hard', 'medium'(default), 'soft'
 -- vim.g.gruvbox_material_background = 'medium'
 -- vim.g.gruvbox_material_disable_italic_comment = false
 -- vim.cmd('colo gruvbox-material')
-require('tokyonight').setup {
-    styles = {
-        comments = { italic = true },
-        keywords = { italic = true }
+
+-- tokyonight
+local use_tokyonight = false
+if use_tokyonight then
+    require('tokyonight').setup {
+        styles = {
+            comments = { italic = true },
+            keywords = { italic = true }
+        }
     }
-}
-vim.cmd('colo tokyonight')
+    vim.cmd('colo tokyonight')
+end
+
+vim.cmd('colo monochrome')
 
 --== Options ==--
 local opts = {

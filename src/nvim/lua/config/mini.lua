@@ -18,91 +18,95 @@ MiniDeps.setup({ path = { package = path_package } })
 local add, now, later = MiniDeps.add, MiniDeps.now, MiniDeps.later
 
 -- Mini modules.
-later(function() require('mini.pairs').setup() end)
+now(function() require('mini.pairs').setup() end)
 now(function() require('mini.icons').setup() end)
 
+
+now(function() add { source = 'nvim-tree/nvim-web-devicons'} end)
+
+
 -- Colorschemes.
-now(function() add { source = 'folke/tokyonight.nvim' } end)
-now(function() add { source = 'sainnhe/gruvbox-material' } end)
-now(function() add { source = 'sainttttt/flesh-and-blood' } end)
-now(function() add { source = 'wnkz/monoglow.nvim'} end)
+-- later(function() add { source = 'folke/tokyonight.nvim' } end)
+-- later(function() add { source = 'sainnhe/gruvbox-material' } end)
+-- later(function() add { source = 'sainttttt/flesh-and-blood' } end)
+-- later(function() add { source = 'wnkz/monoglow.nvim'} end)
+now(function() add { source = 'kglundgren/vim-colortuner' } end)
 now(function() add { source = 'kdheepak/monochrome.nvim'} end)
 
+
 -- fzf-lua
-now(function() add { source = 'ibhagwan/fzf-lua' } end)
-later(function() require('fzf-lua').setup {
-    keymap = {
-        fzf = {
-            ['ctrl-q'] = 'select-all+accept'
+-- now(function() add { source = 'ibhagwan/fzf-lua' } end)
+later(function()
+    add { source = 'ibhagwan/fzf-lua' }
+    require('fzf-lua').setup {
+        keymap = {
+            fzf = {
+                ['ctrl-q'] = 'select-all+accept'
+            }
         }
     }
-} end)
-
-now(function() add { source = 'kglundgren/vim-colortuner' } end)
+    vim.keymap.set('n', '<C-p>', require('fzf-lua').files, { desc = 'Fzf Files'})
+    vim.keymap.set('n', '<C-f>', require('fzf-lua').live_grep, { desc = 'Fzf Grep'})
+ end)
 
 
 -- LSP
-now(function() add {
-    source = 'neovim/nvim-lspconfig',
-    depends = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' }
-} end)
-
-now(function() require('mason').setup() end)
-
-local on_lsp_attach = function(client, bufnr)
-    local client_name = client.name or 'unknown'
-    print('LSP ' .. client_name .. ' attached to bufnr ' .. bufnr)
-
-    -- Disable syntax highlighting from LSP and leave it to treesitter.
-    client.server_capabilities.semanticTokensProvider = nil
-
-    -- Settings for specific LSPs.
-    -- if client_name == 'lua_ls' then
-    -- end
-end
-
-now(function() require('mason-lspconfig').setup_handlers {
-    -- The first entry (without a key) will be the default handler
-    -- and will be called for each installed server that doesn't have
-    -- a dedicated handler.
-    function (server_name) -- default handler
-        require('lspconfig')[server_name].setup { on_attach = on_lsp_attach }
-    end,
-    -- Next, you can provide a dedicated handler for specific servers.
-    -- For example, a handler override for the `lua_ls`:
-    ['lua_ls'] = function()
-        require('lspconfig').lua_ls.setup {
-            settings = { Lua = {
-                diagnostics = { globals = { 'vim' } }
-            }},
-            on_attach = on_lsp_attach
-        }
-    end,
-    ['omnisharp'] = function()
-        require('lspconfig').omnisharp.setup {
-            -- cmd = { 'dotnet', vim.fn.stdpath('data') .. 'mason/packages/omnisharp/libexec/OmniSharp.dll' }
-            cmd = {
-                "omnisharp",
-                "--languageserver",
-                "--hostPID",
-                tostring(vim.fn.getpid())
-            },
-            on_attach = on_lsp_attach
-        }
-    end
-} end)
-
-now(function() require('mason-lspconfig').setup {
-    ensure_installed = {
-        'lua_ls'
+now(function()
+    add {
+        source = 'neovim/nvim-lspconfig',
+        depends = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason.nvim' }
     }
-} end)
 
--- Could be used to manually setup LSPs.
--- But for now we use the automatic setup above, in setup_handlers.
--- later(function()
-    -- 	local lspconfig = require('lspconfig')
-    -- end)
+    require('mason').setup()
+    require('mason-lspconfig').setup {
+        ensure_installed = {
+            'lua_ls',
+        }
+    }
+
+    local on_lsp_attach = function(client, bufnr)
+        local client_name = client.name or 'unknown'
+        print('LSP ' .. client_name .. ' attached to bufnr ' .. bufnr)
+
+        -- Disable syntax highlighting from LSP and leave it to treesitter.
+        client.server_capabilities.semanticTokensProvider = nil
+
+        -- Settings for specific LSPs.
+        -- if client_name == 'lua_ls' then
+        -- end
+    end
+
+    require('mason-lspconfig').setup_handlers {
+        -- The first entry (without a key) will be the default handler
+        -- and will be called for each installed server that doesn't have
+        -- a dedicated handler.
+        function (server_name) -- default handler
+            require('lspconfig')[server_name].setup { on_attach = on_lsp_attach }
+        end,
+        -- Next, you can provide a dedicated handler for specific servers.
+        -- For example, a handler override for the `lua_ls`:
+        ['lua_ls'] = function()
+            require('lspconfig').lua_ls.setup {
+                settings = { Lua = {
+                    diagnostics = { globals = { 'vim' } }
+                }},
+                on_attach = on_lsp_attach
+            }
+        end,
+        ['omnisharp'] = function()
+            require('lspconfig').omnisharp.setup {
+                -- cmd = { 'dotnet', vim.fn.stdpath('data') .. 'mason/packages/omnisharp/libexec/OmniSharp.dll' }
+                cmd = {
+                    "omnisharp",
+                    "--languageserver",
+                    "--hostPID",
+                    tostring(vim.fn.getpid())
+                },
+                on_attach = on_lsp_attach
+            }
+        end,
+    }
+end)
 
 
 -- Treesitter

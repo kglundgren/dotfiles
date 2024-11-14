@@ -37,6 +37,7 @@ end
 
 vim.cmd('colo monochrome')
 
+
 --== Options ==--
 local opts = {
     termguicolors = true,
@@ -147,10 +148,6 @@ map('n', '<leader>e', ':Lexplore<CR>', map_opts)
 
 -- Change working directory to that of the current file. 
 map('n', '<leader>cd', ':cd %:p:h<CR>', map_opts)
-
--- fzf
-vim.keymap.set('n', '<C-p>', require('fzf-lua').files, { desc = 'Fzf Files'})
-vim.keymap.set('n', '<C-f>', require('fzf-lua').live_grep, { desc = 'Fzf Grep'})
 
 -- LSP
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)

@@ -26,11 +26,10 @@ now(function() add { source = 'nvim-tree/nvim-web-devicons'} end)
 
 
 -- Colorschemes.
--- later(function() add { source = 'folke/tokyonight.nvim' } end)
--- later(function() add { source = 'sainnhe/gruvbox-material' } end)
--- later(function() add { source = 'sainttttt/flesh-and-blood' } end)
--- later(function() add { source = 'wnkz/monoglow.nvim'} end)
 now(function() add { source = 'kglundgren/vim-colortuner' } end)
+now(function() add { source = 'sainnhe/gruvbox-material' } end)
+now(function() add { source = 'folke/tokyonight.nvim' } end)
+now(function() add { source = 'sainttttt/flesh-and-blood' } end)
 now(function() add { source = 'kdheepak/monochrome.nvim'} end)
 
 
@@ -46,9 +45,50 @@ later(function()
         }
     }
     vim.keymap.set('n', '<C-p>', require('fzf-lua').files, { desc = 'Fzf Files'})
-    vim.keymap.set('n', '<C-f>', require('fzf-lua').live_grep, { desc = 'Fzf Grep'})
+    vim.keymap.set('n', '<leader>f', require('fzf-lua').live_grep, { desc = 'Fzf Grep'})
  end)
 
+-- Completion
+now(function()
+    add {
+        source = 'hrsh7th/nvim-cmp',
+        depends = {
+            'hrsh7th/cmp-nvim-lsp'
+        }
+    }
+
+    local cmp = require('cmp')
+    cmp.setup {
+        window = {
+            -- completion = cmp.config.window.bordered(),
+            -- documentation = cmp.config.window.bordered(),
+        },
+        mapping = cmp.mapping.preset.insert {
+            ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+            ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            ['<C-Space>'] = cmp.mapping.complete(),
+            ['<C-e>'] = cmp.mapping.abort(),
+            ['<CR>'] = cmp.mapping.confirm { select = true }, -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+            ['<Tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible then
+                    cmp.select_next_item()
+                else
+                    fallback()
+                end
+            end),
+            ['<S-Tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible then
+                    cmp.select_prev_item()
+                else
+                    fallback()
+                end
+            end)
+        },
+        sources = cmp.config.sources {
+            { name = 'nvim_lsp' },
+        }
+    }
+end)
 
 -- LSP
 now(function()
@@ -59,9 +99,7 @@ now(function()
 
     require('mason').setup()
     require('mason-lspconfig').setup {
-        ensure_installed = {
-            'lua_ls',
-        }
+        ensure_installed = { 'lua_ls' }
     }
 
     local on_lsp_attach = function(client, bufnr)
@@ -76,21 +114,28 @@ now(function()
         -- end
     end
 
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
     require('mason-lspconfig').setup_handlers {
         -- The first entry (without a key) will be the default handler
         -- and will be called for each installed server that doesn't have
         -- a dedicated handler.
         function (server_name) -- default handler
-            require('lspconfig')[server_name].setup { on_attach = on_lsp_attach }
+            require('lspconfig')[server_name].setup {
+                on_attach = on_lsp_attach,
+                capabilities = capabilities
+            }
         end,
         -- Next, you can provide a dedicated handler for specific servers.
-        -- For example, a handler override for the `lua_ls`:
+        -- For example, a handler override for `lua_ls`:
         ['lua_ls'] = function()
             require('lspconfig').lua_ls.setup {
-                settings = { Lua = {
-                    diagnostics = { globals = { 'vim' } }
-                }},
-                on_attach = on_lsp_attach
+                settings = {
+                    Lua = {
+                        diagnostics = { globals = { 'vim' } }
+                    }},
+                on_attach = on_lsp_attach,
+                capabilities = capabilities
             }
         end,
         ['omnisharp'] = function()
@@ -102,7 +147,8 @@ now(function()
                     "--hostPID",
                     tostring(vim.fn.getpid())
                 },
-                on_attach = on_lsp_attach
+                on_attach = on_lsp_attach,
+                capabilities = capabilities
             }
         end,
     }

@@ -1,11 +1,12 @@
+-- "Globals", used throughout the config.
+local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
+
+
 --== Plugins ==--
 -- lazy.nvim
 -- require("config.lazy")
 -- mini
 require('config.mini')
-
-
-local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
 
 
 --== Commands ==--
@@ -19,9 +20,12 @@ vim.cmd('set nowrap') -- No line-wrapping on long lines.
 -- Set contrast.
 -- This configuration option should be placed before `colorscheme gruvbox-material`.
 -- Available values: 'hard', 'medium'(default), 'soft'
--- vim.g.gruvbox_material_background = 'medium'
--- vim.g.gruvbox_material_disable_italic_comment = false
--- vim.cmd('colo gruvbox-material')
+local use_gruvbox = true
+if use_gruvbox then
+    vim.g.gruvbox_material_background = 'hard'
+    vim.g.gruvbox_material_disable_italic_comment = false
+    vim.cmd('colo gruvbox-material')
+end
 
 -- tokyonight
 local use_tokyonight = false
@@ -35,7 +39,11 @@ if use_tokyonight then
     vim.cmd('colo tokyonight')
 end
 
-vim.cmd('colo monochrome')
+-- monochrome
+local use_monochrome = false
+if use_monochrome then
+    vim.cmd('colo monochrome')
+end
 
 
 --== Options ==--

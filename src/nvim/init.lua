@@ -22,61 +22,61 @@ vim.cmd('set nowrap') -- No line-wrapping on long lines.
 -- Available values: 'hard', 'medium'(default), 'soft'
 local use_gruvbox = true
 if use_gruvbox then
-    vim.g.gruvbox_material_background = 'hard'
-    vim.g.gruvbox_material_disable_italic_comment = false
-    vim.cmd('colo gruvbox-material')
+  vim.g.gruvbox_material_background = 'hard'
+  vim.g.gruvbox_material_disable_italic_comment = false
+  vim.cmd('colo gruvbox-material')
 end
 
 -- tokyonight
 local use_tokyonight = false
 if use_tokyonight then
-    require('tokyonight').setup {
-        styles = {
-            comments = { italic = true },
-            keywords = { italic = true }
-        }
+  require('tokyonight').setup {
+    styles = {
+      comments = { italic = true },
+      keywords = { italic = true }
     }
-    vim.cmd('colo tokyonight')
+  }
+  vim.cmd('colo tokyonight')
 end
 
 -- monochrome
 local use_monochrome = false
 if use_monochrome then
-    vim.cmd('colo monochrome')
+  vim.cmd('colo monochrome')
 end
 
 
 --== Options ==--
 local opts = {
-    termguicolors = true,
-    number = true,
-    relativenumber = true,
-    mouse = 'a',
-    -- Tab settings --
-    -- expandtab:     When this option is enabled, vi will use spaces instead of tabs.
-    -- tabstop:       Width of tab character.
-    -- softtabstop:   Affects the distance moved when pressing <Tab> or <BS>.
-    -- shiftwidth:    Affects automatic indentation.
-    expandtab = true,
-    tabstop = 8,
-    softtabstop = 4,
-    shiftwidth = 4,
+  termguicolors = true,
+  number = true,
+  relativenumber = true,
+  mouse = 'a',
+  -- Tab settings --
+  -- expandtab:     When this option is enabled, vi will use spaces instead of tabs.
+  -- tabstop:       Width of tab character.
+  -- softtabstop:   Affects the distance moved when pressing <Tab> or <BS>.
+  -- shiftwidth:    Affects automatic indentation.
+  expandtab = true,
+  tabstop = 8,
+  softtabstop = 4,
+  shiftwidth = 4,
 }
 
 -- Conditionally add Windows-specific settings. 
 if is_windows then
-    opts.shell = 'pwsh'
-    opts.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
-    opts.shellredir = "2>&1 | %%{ '$_' } | Out-File %s; exit $LastExitCode"
-    opts.shellpipe = "2>&1 | %%{ '$_' } | tee %s; exit $LastExitCode"
-    opts.shellquote = ''
-    opts.shellxquote = ''
-    vim.cmd('language messages en') -- Set ui and message language to English.
+  opts.shell = 'pwsh'
+  opts.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
+  opts.shellredir = "2>&1 | %%{ '$_' } | Out-File %s; exit $LastExitCode"
+  opts.shellpipe = "2>&1 | %%{ '$_' } | tee %s; exit $LastExitCode"
+  opts.shellquote = ''
+  opts.shellxquote = ''
+  vim.cmd('language messages en') -- Set ui and message language to English.
 end
 
 for k, v in pairs(opts) do
-    -- vim.notify(k .. " = " .. tostring(v)) -- print messages to nvim console
-    vim.opt[k] = v
+  -- vim.notify(k .. " = " .. tostring(v)) -- print messages to nvim console
+  vim.opt[k] = v
 end
 
 
@@ -168,13 +168,13 @@ vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
 -- Treat svelte files as html.
 local autocmd = vim.api.nvim_create_autocmd
 autocmd('BufEnter', {
-    pattern = '*.svelte',
-    command = 'set ft=html',
+  pattern = '*.svelte',
+  command = 'set ft=html',
 })
 
 -- Set HTML syntax highlighting for .razor files.
 autocmd('BufEnter', {
-    pattern = '*.razor',
-    command = 'set ft=html',
+  pattern = '*.razor',
+  command = 'set ft=html',
 })
 

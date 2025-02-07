@@ -1,13 +1,11 @@
 -- "Globals", used throughout the config.
 local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
 
-
 --== Plugins ==--
 -- lazy.nvim
 -- require("config.lazy")
 -- mini
 require('config.mini')
-
 
 --== Commands ==--
 -- vim.opt: Set list and map-style options.
@@ -39,20 +37,13 @@ if use_tokyonight then
   vim.cmd('colo tokyonight')
 end
 
--- monochrome
-local use_monochrome = false
-if use_monochrome then
-  vim.cmd('colo monochrome')
-end
-
-
 --== Options ==--
 local opts = {
   termguicolors = true,
   number = true,
   relativenumber = true,
   mouse = 'a',
-  -- Tab settings --
+  -- Tab/indentation settings
   -- expandtab:     When this option is enabled, vi will use spaces instead of tabs.
   -- tabstop:       Width of tab character.
   -- softtabstop:   Affects the distance moved when pressing <Tab> or <BS>.
@@ -79,17 +70,14 @@ for k, v in pairs(opts) do
   vim.opt[k] = v
 end
 
-
 -- Omnisharp
 vim.g.OmniSharp_highlighting = 0
-
 
 --== Netrw ==--
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 3
 vim.g.netrw_altv = 1
 vim.g.netrw_winsize = 20
-
 
 --== Mappings ==--
 local map = vim.api.nvim_set_keymap
@@ -162,7 +150,6 @@ vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
 vim.keymap.set('n', 'gr', vim.lsp.buf.references)
 vim.keymap.set('n', 'gf', vim.lsp.buf.hover)
 vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
-
 
 --== Autocmds ==--
 -- Treat svelte files as html.

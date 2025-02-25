@@ -1,5 +1,4 @@
--- "Globals", used throughout the config.
-local is_windows = vim.loop.os_uname().sysname == 'Windows_NT'
+local os = require('user.os')
 
 -- Keybindings/maps that do not require external dependencies.
 require('user.map').global()
@@ -35,7 +34,7 @@ local opts = {
 }
 
 -- Conditionally add Windows-specific settings. 
-if is_windows then
+if os.is_windows then
   opts.shell = 'pwsh'
   opts.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues['Out-File:Encoding']='utf8';Remove-Alias -Force -ErrorAction SilentlyContinue tee;"
   opts.shellredir = "2>&1 | %%{ '$_' } | Out-File %s; exit $LastExitCode"

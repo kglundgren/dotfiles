@@ -12,16 +12,21 @@ nnoremap <leader>l :nohl<CR>
 " Rename functions with Leader-R.
 nnoremap <leader>r :vsc Refactor.Rename<CR>
 
+nnoremap <leader>e :vsc View.SolutionExplorer<CR>
+
 " -- Normal mode --
-nnoremap gd :vsc Edit.GoToDefinition<CR>
-nnoremap gh :vsc Edit.GoToDeclaration<CR>
+nnoremap grd :vsc Edit.GoToDefinition<CR>
+nnoremap grh :vsc Edit.GoToDeclaration<CR>
 nnoremap gf :vsc Edit.QuickInfo<CR>
-nnoremap gi :vsc Edit.GoToImplementation<CR>
-nnoremap gr :vsc Edit.FindAllReferences<CR>
+nnoremap <S-k> :vsc Edit.QuickInfo<CR>
+nnoremap gri :vsc Edit.GoToImplementation<CR>
+nnoremap grr :vsc Edit.FindAllReferences<CR>
 nnoremap ]d :vsc Edit.GoToNextIssueInFile<CR>
 nnoremap [d :vsc Edit.GoToPreviousIssueInFile<CR>
 nnoremap <C-i> :vsc View.NavigateForward<CR>
 nnoremap <C-o> :vsc View.NavigateBackward<CR>
+nnoremap <C-d> <S-L>zz
+nnoremap <C-u> <S-H>zz
 
 " -- Visual mode -- 
 " Disable regular (annoying) visual paste behavior.

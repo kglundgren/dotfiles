@@ -25,6 +25,7 @@ later(function()
       'javascript',
       'typescript',
       'tsx',
+      'razor'
     },
     highlight = { enable = true },
     indent = {

@@ -72,3 +72,11 @@ function cdf {
     cd (split-path (Get-Command $exeName).Source)
 }
 
+function ll {
+    ls -fo
+}
+
+function la {
+    ls -fo -r
+}
+

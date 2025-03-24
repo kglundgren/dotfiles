@@ -72,6 +72,23 @@ function M.lsp()
   vim.keymap.set('n', 'gr', vim.lsp.buf.references)
   vim.keymap.set('n', 'gf', vim.lsp.buf.hover)
   vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help)
+  vim.keymap.set('n', ']d', vim.lsp.buf.signature_help)
+
+    vim.keymap.set('n', ']d', function()
+      vim.diagnostic.jump({ count = vim.v.count1, float = true })
+    end, { desc = 'Jump to the next diagnostic in the current buffer' })
+
+    vim.keymap.set('n', '[d', function()
+      vim.diagnostic.jump({ count = -vim.v.count1, float = true })
+    end, { desc = 'Jump to the previous diagnostic in the current buffer' })
+
+    vim.keymap.set('n', ']D', function()
+      vim.diagnostic.jump({ count = math.huge, wrap = false, float = true })
+    end, { desc = 'Jump to the last diagnostic in the current buffer' })
+
+    vim.keymap.set('n', '[D', function()
+      vim.diagnostic.jump({ count = -math.huge, wrap = false, float = true })
+    end, { desc = 'Jump to the first diagnostic in the current buffer' })
 end
 
 function M.fzf()

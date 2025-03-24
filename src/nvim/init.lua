@@ -8,6 +8,7 @@ require('user.colo')
 require('user.lsp')
 require('user.ts')
 require('user.snippets')
+require('user.util')
 
 -- Commands
 -- vim.opt: Set list and map-style options.
